@@ -1,1 +1,2 @@
-# redux-quiz
+# quiz-plugin
+A jQuery quiz plugin
