@@ -35,8 +35,7 @@ module.exports = {
   plugins: [
         new CopyWebpackPlugin([
           {from: 'src/index.html'},
-          {from: 'src/reset.css', to: "reset.css"},
-          {from: 'src/style.css', to: "style.css"}
+          {from: 'src/main.css', to: "main.css"}
         ])
     ]
 }
