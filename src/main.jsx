@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import createQuizStore from './store';
 import quizSeed from './quizSeed';
 
-import Quiz from './quiz';
+import Quiz from './components';
 
 const store = createQuizStore({ data: quizSeed });
 

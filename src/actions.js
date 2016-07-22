@@ -4,17 +4,17 @@ export const SUBMIT_ANSWER = 'SUBMIT_ANSWER';
 export const RETAKE_QUIZ = 'RETAKE_QUIZ';
 
 // action creators
-export const selectAnswer = (answerNumber) => {
+export const selectAnswer = (selectedAnswer) => {
   return {
     type: SELECT_ANSWER,
-    answerNumber: answerNumber
+    selectedAnswer
   };
 };
 
-export const submitAnswer = (answerNumber) => {
+export const submitAnswer = (selectedAnswer) => {
   return {
     type: SUBMIT_ANSWER,
-    answerNumber: answerNumber
+    selectedAnswer
   };
 };
 

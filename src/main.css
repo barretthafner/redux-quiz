@@ -10,10 +10,11 @@ body {
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
+  background-color: cornsilk;
+
 }
 
 #container {
-  background-color: cornsilk;
   height: 100%;
 
 }
@@ -55,14 +56,20 @@ body {
   margin-top: 0;
 }
 
+/*
 input[type=radio] {
   position: absolute;
   top: -1000px;
 }
+*/
 
+/*
 input[type=radio]:checked + div {
   background-color: darkgray;
 }
+*/
+
+
 
 .quiz-answer {
   display: block;
@@ -76,11 +83,9 @@ input[type=radio]:checked + div {
   cursor: pointer;
 }
 
-/*
 .selected {
   background: darkgray;
 }
-*/
 
 .quiz-submit, .quiz-new {
   display: inline-block;
@@ -108,6 +113,5 @@ input[type=radio]:checked + div {
 }
 
 .quiz-complete-view {
-/*  start hidden */
-  display: none;
+  display: inline-block;
 }

@@ -59,12 +59,11 @@ export default {
   ],
   finalMessages: [
     "Jesus, George, it was a wonder I was ever born.",
-    "That's heavy man...",
-    "Hmmm, better check your flux-capacitor.",
+    "That's heavy man.",
+    "Hmmm, better check your flux-capacitor...",
     "Where we are going, we don't need roads.",
     "Great Scott!",
-    "1.21 GIGAWATTS!!!",
-    "What the hell is a gigawatt?!?"
+    "1.21 GIGAWATTS!!!"
   ]
 }
 
