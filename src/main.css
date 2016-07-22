@@ -12,7 +12,7 @@ body {
   user-select: none;
 }
 
-.container {
+#container {
   background-color: cornsilk;
   height: 100%;
 
