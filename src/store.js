@@ -1,4 +1,5 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
 import quizReducer from './reducers';
 
 
@@ -8,6 +9,8 @@ const DEFAULT_INITIAL_STATE = {
   quizFinished: false,
   currentScore: 0,
   finalMessage: "",
+  topScore: null,
+  scoreMessage: "",
   data: {
     title: "Default Title",
     questions: [
@@ -27,5 +30,6 @@ const DEFAULT_INITIAL_STATE = {
 
 
 export default (DEFINED_INITIAL_STATE) => {
-  return createStore(quizReducer, Object.assign({}, DEFAULT_INITIAL_STATE, DEFINED_INITIAL_STATE));
+  const initialState = Object.assign({}, DEFAULT_INITIAL_STATE, DEFINED_INITIAL_STATE);
+  return createStore(quizReducer, initialState, applyMiddleware(ReduxThunk));
 }

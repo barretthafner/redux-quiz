@@ -36,8 +36,42 @@ function quizReducer(state, action) {
         quizFinished: false,
         selectedAnswer: null,
         currentScore: 0,
-        finalMessage: ""
+        finalMessage: "",
+        topScore: null,
+        scoreMessage: ""
       });
+
+    case actions.FETCH_TOPSCORE_SUCCESS:
+
+      let scoreMessage;
+      if(action.topScore > state.currentScore) {
+        scoreMessage = 'Try again! Top score is: ' + action.topScore;
+      } else if (action.topScore === state.currentScore) {
+        scoreMessage = 'You tied for top score with: ' + state.currentScore;
+      } else {
+        actions.setTopScore(state.currentScore);
+        scoreMessage = 'You set a new high score with: ' + state.currentScore;
+      }
+      if (state.quizFinished) {
+        return Object.assign({}, state, {
+          scoreMessage
+        });
+      }
+      break;
+
+    case actions.FETCH_TOPSCORE_ERROR:
+      console.log(action.error);
+      return Object.assign({}, state, {
+        topScore: 'N/A'
+      });
+
+    case actions.SET_TOPSCORE_SUCCESS:
+      console.log(action.topScore);
+      return state;
+
+    case actions.SET_TOPSCORE_ERROR:
+      console.log(action.error);
+      return state;
 
     default:
       return state;

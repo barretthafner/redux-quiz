@@ -35,7 +35,9 @@ module.exports = {
   plugins: [
         new CopyWebpackPlugin([
           {from: 'src/index.html'},
-          {from: 'src/main.css', to: "main.css"}
+          {from: 'src/main.css'},
+          {from: 'src/favicon.ico'},
+          {from: 'src/loading.gif'}
         ])
     ]
 }

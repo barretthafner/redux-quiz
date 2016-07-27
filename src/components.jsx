@@ -7,6 +7,7 @@ class Quiz extends React.Component {
   constructor(props) {
     super(props);
   }
+
   render() {
 
     const state = this.props.state;
@@ -14,7 +15,7 @@ class Quiz extends React.Component {
     let quizView = () => {
       if(state.quizFinished) {
         return (
-          <QuizComplete finalMessage={state.finalMessage} finalScore={state.currentScore} retakeQuiz={this.props.retakeQuiz} />
+          <QuizComplete finalMessage={state.finalMessage} finalScore={state.currentScore} retakeQuiz={this.props.retakeQuiz} fetchTopScore={this.props.fetchTopScore} scoreMessage={state.scoreMessage} />
         );
       } else {
         const currentQuestion = state.data.questions[state.currentQuestionIndex];
@@ -41,12 +42,6 @@ class Quiz extends React.Component {
 class QuestionForm extends React.Component {
   constructor(props) {
     super(props);
-  this.onClick = this.onClick.bind(this);
-
-  }
-
-  onClick(event) {
-
   }
 
   render() {
@@ -86,13 +81,27 @@ class QuizComplete extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  componentDidMount() {
+    this.props.fetchTopScore();
+  }
+
   render() {
+
     const props = this.props;
+    let topScoreArea;
+
+    if (props.scoreMessage !== "" ) {
+      topScoreArea = <h1 className="quiz-final-score">{props.scoreMessage}</h1>;
+    } else {
+      topScoreArea = <img src='loading.gif' width='40'></img>
+    }
     return (
       <section className="quiz-complete-view">
         <div>
           <h1 className="quiz-final-message">{props.finalMessage}</h1>
           <h1 className="quiz-final-score">Final Score: {props.finalScore}</h1>
+          {topScoreArea}
           <button className="quiz-new" onClick={props.retakeQuiz}>Retake Quiz</button>
         </div>
       </section>
@@ -100,13 +109,13 @@ class QuizComplete extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     state: state
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     selectAnswer: (answerNumber) => {
       dispatch(actions.selectAnswer(answerNumber));
@@ -116,6 +125,9 @@ const mapDispatchToProps = (dispatch, props) => {
     },
     retakeQuiz: () => {
       dispatch(actions.retakeQuiz());
+    },
+    fetchTopScore: () => {
+      dispatch(actions.fetchTopScore());
     }
   };
 };
