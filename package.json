@@ -5,8 +5,9 @@
   "main": "src/main.jsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "serve": "webpack-dev-server"
+    "build": "webpack --progress --colors",
+    "serve": "webpack-dev-server --progress --colors",
+    "watch": "webpack --progress --colors --watch"
   },
   "author": "Barrett Hafner <barrett@hafnerindustries.com>",
   "license": "ISC",

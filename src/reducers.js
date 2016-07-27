@@ -38,23 +38,27 @@ function quizReducer(state, action) {
         currentScore: 0,
         finalMessage: "",
         topScore: null,
-        scoreMessage: ""
+        scoreMessage: "",
+        highScore: false
       });
 
     case actions.FETCH_TOPSCORE_SUCCESS:
 
       let scoreMessage;
+      let highScore = false;
       if(action.topScore > state.currentScore) {
         scoreMessage = 'Try again! Top score is: ' + action.topScore;
       } else if (action.topScore === state.currentScore) {
         scoreMessage = 'You tied for top score with: ' + state.currentScore;
       } else {
-        actions.setTopScore(state.currentScore);
         scoreMessage = 'You set a new high score with: ' + state.currentScore;
+        highScore = true;
       }
+      // bug: if retake quiz is called before api call comes back no new high score will be set on the api
       if (state.quizFinished) {
         return Object.assign({}, state, {
-          scoreMessage
+          scoreMessage,
+          highScore
         });
       }
       break;

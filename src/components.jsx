@@ -8,6 +8,12 @@ class Quiz extends React.Component {
     super(props);
   }
 
+  componentDidUpdate() {
+    if (this.props.state.highScore === true) {
+      this.props.setTopScore(this.props.state.currentScore);
+    }
+  }
+
   render() {
 
     const state = this.props.state;
@@ -128,6 +134,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchTopScore: () => {
       dispatch(actions.fetchTopScore());
+    },
+    setTopScore: (score) => {
+      dispatch(actions.setTopScore(score));
     }
   };
 };

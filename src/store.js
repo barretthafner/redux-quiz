@@ -11,6 +11,7 @@ const DEFAULT_INITIAL_STATE = {
   finalMessage: "",
   topScore: null,
   scoreMessage: "",
+  highScore: false,
   data: {
     title: "Default Title",
     questions: [

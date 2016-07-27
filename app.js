@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 
 var topScore = 0;
 
-app.use(bodyParser.urlencoded({extended: true}));
+var jsonParser = bodyParser.json();
 
 app.use(express.static(__dirname + "/build"));
 
@@ -14,16 +14,16 @@ app.get('/api/topScore', function(req, res) {
     res.json({
       "topScore": topScore
     });
-  }, 2000);
+  }, 1000);
 
 });
 
-app.post('/api/topScore', function(req, res) {
-  console.log('bammmmm!');
-  console.log(req);
-  topScore = req.body.topScore;
+app.post('/api/topScore', jsonParser, function(req, res) {
+  if (req.body.topScore > topScore) {
+    topScore = req.body.topScore;
+  }
   res.json({
-    "topScore": topScore
+      "topScore": topScore
   });
 });
 

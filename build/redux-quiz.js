@@ -22694,6 +22694,7 @@
 	  finalMessage: "",
 	  topScore: null,
 	  scoreMessage: "",
+	  highScore: false,
 	  data: {
 	    title: "Default Title",
 	    questions: [{
@@ -22791,23 +22792,27 @@
 	        currentScore: 0,
 	        finalMessage: "",
 	        topScore: null,
-	        scoreMessage: ""
+	        scoreMessage: "",
+	        highScore: false
 	      });
 	
 	    case actions.FETCH_TOPSCORE_SUCCESS:
 	
 	      var scoreMessage = void 0;
+	      var highScore = false;
 	      if (action.topScore > state.currentScore) {
 	        scoreMessage = 'Try again! Top score is: ' + action.topScore;
 	      } else if (action.topScore === state.currentScore) {
 	        scoreMessage = 'You tied for top score with: ' + state.currentScore;
 	      } else {
-	        actions.setTopScore(state.currentScore);
 	        scoreMessage = 'You set a new high score with: ' + state.currentScore;
+	        highScore = true;
 	      }
+	      // bug: if retake quiz is called before api call comes back no new high score will be set on the api
 	      if (state.quizFinished) {
 	        return Object.assign({}, state, {
-	          scoreMessage: scoreMessage
+	          scoreMessage: scoreMessage,
+	          highScore: highScore
 	        });
 	      }
 	      break;
@@ -22844,11 +22849,7 @@
 	});
 	exports.setTopScore = exports.fetchTopScore = exports.setTopScoreError = exports.setTopScoreSuccess = exports.fetchTopScoreError = exports.fetchTopScoreSuccess = exports.retakeQuiz = exports.submitAnswer = exports.selectAnswer = exports.SET_TOPSCORE_ERROR = exports.SET_TOPSCORE_SUCCESS = exports.FETCH_TOPSCORE_ERROR = exports.FETCH_TOPSCORE_SUCCESS = exports.RETAKE_QUIZ = exports.SUBMIT_ANSWER = exports.SELECT_ANSWER = undefined;
 	
-	var _isomorphicFetch = __webpack_require__(198);
-	
-	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	__webpack_require__(198);
 	
 	// action types
 	var SELECT_ANSWER = exports.SELECT_ANSWER = 'SELECT_ANSWER';
@@ -22911,7 +22912,7 @@
 	var fetchTopScore = exports.fetchTopScore = function fetchTopScore() {
 	  return function (dispatch) {
 	    var url = '/api/topScore';
-	    return (0, _isomorphicFetch2.default)(url).then(function (res) {
+	    return fetch(url).then(function (res) {
 	      if (res.state < 200 || res.status >= 300) {
 	        var error = new Error(res.statusText);
 	        error.res = res;
@@ -22919,10 +22920,8 @@
 	      }
 	      return res;
 	    }).then(function (res) {
-	      console.log(res);
 	      return res.json();
 	    }).then(function (data) {
-	      console.log(data);
 	      return dispatch(fetchTopScoreSuccess(data.topScore));
 	    }).catch(function (error) {
 	      return dispatch(fetchTopScoreError(error));
@@ -22933,12 +22932,14 @@
 	var setTopScore = exports.setTopScore = function setTopScore(score) {
 	  return function (dispatch) {
 	    var url = '/api/topScore';
-	    var data = new FormData();
-	    return (0, _isomorphicFetch2.default)(url, {
-	      method: 'POST',
-	      body: {
+	    return fetch(url, {
+	      method: 'post',
+	      headers: {
+	        'Content-Type': 'application/json'
+	      },
+	      body: JSON.stringify({
 	        topScore: score
-	      }
+	      })
 	    }).then(function (res) {
 	      if (res.state < 200 || res.status >= 300) {
 	        var error = new Error(res.statusText);
@@ -22947,10 +22948,8 @@
 	      }
 	      return res;
 	    }).then(function (res) {
-	      console.log(res);
 	      return res.json();
 	    }).then(function (data) {
-	      console.log(data);
 	      return dispatch(setTopScoreSuccess(data.topScore));
 	    }).catch(function (error) {
 	      return dispatch(setTopScoreError(error));
@@ -23491,6 +23490,13 @@
 	  }
 	
 	  _createClass(Quiz, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      if (this.props.state.highScore === true) {
+	        this.props.setTopScore(this.props.state.currentScore);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -23674,6 +23680,9 @@
 	    },
 	    fetchTopScore: function fetchTopScore() {
 	      dispatch(actions.fetchTopScore());
+	    },
+	    setTopScore: function setTopScore(score) {
+	      dispatch(actions.setTopScore(score));
 	    }
 	  };
 	};

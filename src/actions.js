@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
 
 // action types
 export const SELECT_ANSWER = 'SELECT_ANSWER';
@@ -69,15 +69,16 @@ export const fetchTopScore = () => {
           throw error;
         }
         return res;
-      }).then((res) => {
-        console.log(res);
+      })
+      .then((res) => {
         return res.json();
-      }).then((data) => {
-        console.log(data);
+      })
+      .then((data) => {
         return dispatch(
           fetchTopScoreSuccess(data.topScore)
         );
-      }).catch((error) => {
+      })
+      .catch((error) => {
         return dispatch(
           fetchTopScoreError(error)
         );
@@ -88,28 +89,32 @@ export const fetchTopScore = () => {
 export const setTopScore = (score) => {
   return (dispatch) => {
     const url = '/api/topScore';
-    var data = new FormData();
     return fetch(url, {
-      method: 'POST',
-      body : {
-        topScore: score
-      }
-      }).then((res) => {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          topScore: score
+        })
+      })
+      .then((res) => {
         if (res.state < 200 || res.status >= 300) {
           var error = new Error(res.statusText);
           error.res = res;
           throw error;
         }
         return res;
-      }).then((res) => {
-        console.log(res);
+      })
+      .then((res) => {
         return res.json();
-      }).then((data) => {
-        console.log(data);
+      })
+      .then((data) => {
         return dispatch(
           setTopScoreSuccess(data.topScore)
         );
-      }).catch((error) => {
+      })
+      .catch((error) => {
         return dispatch(
           setTopScoreError(error)
         );
